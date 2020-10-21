@@ -8,7 +8,7 @@
 }
 
 .transbox {
-    position: absolute;
+    position: relative;
     margin: 30px;
     top: 10%;
     left: 1%;
@@ -60,6 +60,8 @@
     font-weight: bold;
     color: aliceblue;
 }
+
+
 
 .col-sm-2 button {
     background-color: #555555;
