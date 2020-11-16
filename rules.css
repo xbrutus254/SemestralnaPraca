@@ -61,6 +61,24 @@
     color: aliceblue;
 }
 
+.transboxLog {
+    position: absolute;
+    margin: 30px;
+    top: 20%;
+    left: 37.5%;
+    background-color: rgb(238, 44, 89, 0.4);
+    border: 3px red;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 22%;
+}
+
+.transboxLog label, p{
+    margin: 5%;
+    font-weight: bold;
+    color: aliceblue;
+}
+
 
 
 .col-sm-2 button {
