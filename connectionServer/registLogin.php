@@ -111,9 +111,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="col-sm-12">
         <div class="transboxLog">
             <div style = "background-color:#333333; color:#FFFFFF; padding:3px;"><b>Login</b></div>
-
-
-
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                     <label>Username</label>
@@ -136,12 +133,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
                 <p>Already have an account? <a href="../LoginPage.php">Login here</a>.</p>
             </form>
-
-
         </div>
-
     </div>
-
 </div>
 
 

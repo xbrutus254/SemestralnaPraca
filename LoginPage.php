@@ -2,10 +2,15 @@
     session_start();
     require "connectionServer/Connection.php";
 
-    /*if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-        header("location: welcomeLogin.php");
+    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+        if ("admin" === $_SESSION["name"])
+        {
+            header("location: connectionServer/welcomeLoginAdm.php");
+        } else {
+            header("location: connectionServer/welcomeLogin.php");
+        }
         exit;
-    }*/
+    }
 
     $username = $password = "";
     $username_err = $password_err = "";
@@ -44,7 +49,12 @@
                     $_SESSION["name"] = $username;
 
                     // Redirect user to welcome page
-                    header("location: connectionServer/welcomeLogin.php");
+                    if ("admin" === $username)
+                    {
+                        header("location: connectionServer/welcomeLoginAdm.php");
+                    } else {
+                        header("location: connectionServer/welcomeLogin.php");
+                    }
                 } else {
                     $password_err = "The password you entered was not valid.";
                 }
@@ -111,32 +121,24 @@
     <div class="col-sm-12">
         <div class="transboxLog">
             <div style = "background-color:#333333; color:#FFFFFF; padding:3px;"><b>Login</b></div>
-
-
-
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                    <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                        <label>Username</label>
-                        <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                        <span class="help-block"><?php echo $username_err; ?></span>
-                    </div>
-                    <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control">
-                        <span class="help-block"><?php echo $password_err; ?></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Login">
-                    </div>
-                    <p>Don't have an account? <a href="connectionServer/registLogin.php">Sign up now</a>.</p>
-                </form>
-
-
-            </div>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                    <span class="help-block"><?php echo $username_err; ?></span>
+                </div>
+                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control">
+                    <span class="help-block"><?php echo $password_err; ?></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Login">
+                </div>
+                <p>Don't have an account? <a href="connectionServer/registLogin.php">Sign up now</a>.</p>
+            </form>
+        </div>
     </div>
-
-
-
 </div>
 
 
