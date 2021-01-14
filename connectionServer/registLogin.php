@@ -1,6 +1,9 @@
 <?php
 
-require "../connectionServer/Connection.php";
+require_once('Connection.php');
+
+$my_Db      = new Connection();
+$my_Db_Connection = $my_Db->getDBH();
 
 $username = $password = $confirm_password = "";
 $username_err = $password_err = $confirm_password_err = "";
@@ -15,13 +18,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $username = trim($_POST["username"]);
 
-        $sthandler = $my_Db_Connection->prepare("SELECT username FROM uzivatel WHERE username = :name");
+        $sthandler = $my_Db_Connection->prepare("SELECT username FROM appusers WHERE username = :name");
         $sthandler->bindParam(':name', $username);
         $sthandler->execute();
         if($sthandler->rowCount() > 0) {
             $username_err = "This username is already taken.";
-            // Validate password
         }
+        // Validate password
         if(empty(trim($_POST["password"]))){
             $password_err = "Please enter a password.";
         } elseif(strlen(trim($_POST["password"])) < 6){
@@ -40,8 +43,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
         if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
-            $userdata = array($username, $password);
-            $insert_Statement = $my_Db_Connection->prepare("INSERT INTO uzivatel (username, password) VALUES (?, ?)");
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $userdata = array($username, $hash);
+            $insert_Statement = $my_Db_Connection->prepare("INSERT INTO appusers (username, password) VALUES (?, ?)");
 
             if (!$insert_Statement->execute($userdata)) {
                 echo "Unable to create record";
@@ -87,22 +91,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="../OurSolarSys.html">Our Solar System <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="../OurSolarSys.php">Our Solar System <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="../Satellites.html">Satellites</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../BigBang.html">Big Bang</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="../LoginPage.php">Log in</a>
+                <a class="nav-link" href="../buystar.php">Buy Star</a>
             </li>
         </ul>
-        <form class="form-inline mt-2 mt-md-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="LoginPage.php">Log in</a>
+            </li>
+        </ul>
     </div>
 </nav>
 

@@ -1,0 +1,231 @@
+.overlay {
+    overflow: hidden;
+    height: 0%;
+    width: 100%;
+    position: fixed;
+    padding-top: initial;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0, 0.9);
+    transition: 0.5s;
+}
+
+.overlay-content {
+
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 40%;
+    right: 28%;
+    font-size: 30px;
+}
+
+.overlay .closebtn {
+    position: absolute;
+    bottom: 0%;
+    right: 50%;
+    font-size: 50px;
+}
+
+.opener {
+    position: absolute;
+    top: 1%;
+    left: 44%;
+    text-shadow: 2px 2px 5px red;
+}
+
+.overlay a {
+
+    text-decoration: none;
+    font-size: 36px;
+    color: #f80000;
+    transition: 0.3s;
+    animation: fadeEffect 1s;
+    padding: 0px 16px;
+}
+
+
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .overlay {padding-top: 15px;}
+    .overlay a {font-size: 18px;}
+}
+
+.row {
+    position: absolute;
+    top: 7%;
+    width: 100%;
+    height: 93%;
+    background-color: red; /* For browsers that do not support gradients */
+    background-image: linear-gradient(to right, #434343, #fafaf2, #434343);
+}
+
+.col-sm-1 button{
+    background-color: #b00000;
+    width: 100%;
+    height: 99%;
+    color: white;
+
+    border: 10px black;
+    border-radius: 16px;
+    margin: 3px;
+}
+
+.transparent-box {
+
+    margin: 30px;
+    background-color: rgba(186, 186, 186, 0.18);
+    border: 10px #de0000;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10%;
+    position: absolute;
+
+    left: 3%;
+    top: 7%;
+    width: 90%;
+    height: 80%;
+}
+
+input[type=text] {
+    width: 10%;
+    padding: 6px;
+    border: 1px solid #000000;
+}
+
+/* Style the submit button */
+input[type=submit] {
+    background-color: #5aff00;
+    color: #000000;
+    display: inline;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: top;
+}
+
+.transparent-box p {
+    position: absolute;
+    left: 20%;
+    top: 30%;
+}
+
+table.table2 {
+
+    position: absolute;
+    left: 70%;
+}
+
+table.table1 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.table1 th {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    background: #666;
+    color: #FFF;
+    padding: 2px 6px;
+    border-collapse: separate;
+    border: 4px solid #4c4646;
+    text-shadow: 2px 2px 5px red;
+}
+
+table.table2 th {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #666;
+    color: #FFF;
+    padding: 2px 6px;
+    border-collapse: separate;
+    border: 2px solid #4c4646;
+    text-shadow: 2px 2px 5px red;
+}
+
+table.table1 td {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 60px;
+    background-color: rgba(183, 170, 173, 0.4);
+    color: #FFF;
+    padding: 2px 6px;
+    border-collapse: separate;
+    border: 4px solid #4c4646;
+    text-shadow: 2px 2px 5px red;
+}
+
+table.table2 td {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background-color: rgba(183, 170, 173, 0.2);
+    color: #343131;
+    padding: 2px 6px;
+    border-collapse: separate;
+    border: 2px solid #4c4646;
+    text-shadow: 2px 2px 5px red;
+}
+
+.transparent-box .col {
+    float: left;
+    width: 23%;
+    margin: auto;
+    padding: 0 50px;
+    margin-top: 6px;
+}
+
+input[type=submit] {
+    float: right;
+    background-color: #ec1c1c;
+    color: white;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 650px) {
+    .transparent-box .col {
+        width: 80%;
+        margin-top: 0;
+    }
+    /* hide the vertical line */
+    .table {
+        display: none;
+    }
+
+    .col-sm-1 button {
+        width: 20%;
+        height: 80%;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+    .row.content {height: auto;}
+}

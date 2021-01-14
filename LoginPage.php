@@ -1,6 +1,9 @@
 <?php
     session_start();
-    require "connectionServer/Connection.php";
+    require_once('connectionServer/Connection.php');
+
+    if (!isset($my_Db)) $my_Db      = new Connection();
+    $my_Db_Connection = $my_Db->getDBH();
 
     if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
         if ("admin" === $_SESSION["name"])
@@ -14,18 +17,21 @@
 
     $username = $password = "";
     $username_err = $password_err = "";
+    $usr_checker = "";
+    $pass_checker = "";
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         // Check if username is empty
         if(empty(trim($_POST["username"]))) {
+            $usr_checker = trim($_POST["username"]);
             $username_err = "Please enter a username.";
         } else{
             $username = trim($_POST["username"]);
-
         }
         // Check if password is empty
         if(empty(trim($_POST["password"]))){
+            $pass_checker = trim($_POST["password"]);
             $password_err = "Please enter your password.";
         } else{
             $password = trim($_POST["password"]);
@@ -34,15 +40,17 @@
         // Validate credentials
         if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-            $sthandler = $my_Db_Connection->prepare("SELECT username FROM uzivatel WHERE username = :name");
+            $sthandler = $my_Db_Connection->prepare("SELECT username FROM appusers WHERE username = :name");
             $sthandler->bindParam(':name', $username);
             $sthandler->execute();
             if($sthandler->rowCount() > 0) {
-                $sthandler = $my_Db_Connection->prepare("SELECT username, password FROM uzivatel WHERE username = :name AND password = :pass");
+                $sthandler = $my_Db_Connection->prepare("SELECT username, password FROM appusers WHERE username = :name AND password = :pass");
                 $sthandler->bindParam(':name', $username);
                 $sthandler->bindParam(':pass', $password);
                 $sthandler->execute();
-                if($sthandler->rowCount() > 0) {
+                //echo " pass_checker : " . $_POST["password"];
+                //echo " password : " . $password;
+                if($_POST["username"] === $username && $_POST['password'] === $password) {
                     session_start();
                     // Store data in session variables
                     $_SESSION["loggedin"] = true;
@@ -66,7 +74,7 @@
 ?><head>
     <meta charset="UTF-8">
     <title>OuterSpace</title>
-    <link rel="icon" href="icon.png">
+    <link rel="icon" href="dataImages/icon.png">
     <link rel="stylesheet" href="rules.css">
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -97,22 +105,25 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="OurSolarSys.html">Our Solar System <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="OurSolarSys.php">Our Solar System <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="Satellites.html">Satellites</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="BigBang.html">Big Bang</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="LoginPage.php">Log in</a>
+                <a class="nav-link" href="buystar.php">Buy Star</a>
             </li>
         </ul>
-        <form class="form-inline mt-2 mt-md-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="LoginPage.php">Log in</a>
+                <?php
+                if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+                    echo "<a>" . $_SESSION["name"] . "</a>";
+                }
+                ?>
+            </li>
+        </ul>
     </div>
 </nav>
 

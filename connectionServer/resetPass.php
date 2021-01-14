@@ -3,6 +3,9 @@
 session_start();
 require_once "Connection.php";
 
+$my_Db      = new Connection();
+$my_Db_Connection = $my_Db->getDBH();
+
 // Check if the user is logged in, if not then redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: ../LoginPage.php");
@@ -35,7 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if(empty($new_password_err) && empty($confirm_password_err)){
-        $sthandler = $my_Db_Connection->prepare("UPDATE uzivatel SET password = :password WHERE username = :name");
+        $sthandler = $my_Db_Connection->prepare("UPDATE appusers SET password = :password WHERE username = :name");
 
         $username = $_SESSION["name"];
 

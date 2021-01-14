@@ -77,6 +77,7 @@
     margin: 5%;
     font-weight: bold;
     color: aliceblue;
+    animation: fadeEffect 2s;
 }
 
 
@@ -98,6 +99,17 @@
 .sidenav {
     background-color: #bfbdbd;
     height: 100%;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
 
 /* Set black background color, white text and some padding */
