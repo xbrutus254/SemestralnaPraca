@@ -7,7 +7,7 @@ $my_Db_Connection = $my_Db->getDBH();
 function deleteUser($name, $my_Db_Connection)
 {
     echo $name;
-    $sthandler = $my_Db_Connection->prepare("SELECT appusers FROM uzivatel WHERE username = :name");
+    $sthandler = $my_Db_Connection->prepare("SELECT username FROM appusers WHERE username = :name");
     $sthandler->bindParam(':name', $name);
     $sthandler->execute();
     if($sthandler->rowCount() > 0)

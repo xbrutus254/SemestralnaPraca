@@ -65,6 +65,21 @@ function ParseFilter() {
 
 }
 
+function buyBodie(user) {
+    var iter = Number(sessionStorage.getItem("iteration"));
+    var swt = 1;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("txtHint").innerHTML = this.responseText;
+        }
+    };
+
+    xmlhttp.open("GET", "additionalFunctions/getProduct.php?q="
+        + (Number(iter)) + "&buyQ=" + swt + "&usr=" + user, true);
+    xmlhttp.send();
+}
+
 function openNav() {
     document.getElementById("downNav").style.height = "30%";
 }

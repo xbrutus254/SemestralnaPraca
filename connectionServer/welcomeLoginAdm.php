@@ -8,7 +8,7 @@
 
     // Check if the user is logged in, if not then redirect him to login page
     if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-        header("location: LoginPage.php");
+        header("location: ../LoginPage.php");
         exit;
     }
     $sthandler = $my_Db_Connection->prepare("SELECT username FROM appusers");
@@ -82,18 +82,18 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <div class="overlay-content">
         <a href="javascript:void(0)" onclick="showUsers()">Users</a>
-        <a href="javascript:void(0)" onclick="showProducts()">Show Products</a>
-        <a href="javascript:void(0)" onclick="addProducts()">Add Products</a>
-        <a href="#">Contact</a>
+        <a href="javascript:void(0)" onclick="showProducts()">Show Bodies</a>
+        <a href="javascript:void(0)" onclick="addProducts()">Add Bodies</a>
+        <a href="javascript:void(0)" onclick="contact()">Contact</a>
     </div>
 </div>
 <div class="row" id="leftN">
     <div class="col-sm-4">
         <h1> Info:</h1>
         <hr>
-        <h2> Here you can modify users accounts, add new product and allocate product to user.</h2>
+        <h2> Here you can delete users accounts, add new bodies and view bodies.</h2>
         <hr>
-        <h2> Users can be added to the blacklist only for binding reasons.</h2>
+        <h2> The amount can be allocated to the user only after the bank transfer.</h2>
     </div>
     <div class="col-sm-8">
 
@@ -102,26 +102,11 @@
         <h2 id="idTitle">Users:</h2>
 
         <div id="idContextUsers">
-            <style>
-                input[type=text]{
-                    position: relative;
-                    left: 40%;
-                    width: 25%;
-                    border: 2px solid #ff0808;
-                }
-            </style>
-            <input type="text" id="moneyInput" class="form-control" placeholder="money">
+
+            <input type="text" id="moneyInput" class="form-control2" placeholder="money">
             <?php foreach ($result as $row) {
                 $name = $row['username'];?>
-
-                <style>
-                    h3 {
-                        position: relative;
-                        top: 20%;
-                    }
-                </style>
                 <hr>
-
                 <h3><?php echo $name ?>
                     <a href="welcomeLoginAdm.php?fn=deleteUser&param=<?=$name ?>" class="btn btn-danger">delete user</a>
                     <button type="button" class="btn btn-success" onclick="addmoney('<?=$name ?>')">add</button>
@@ -219,13 +204,17 @@
 
     function addmoney(name) {
         var money = document.getElementById("moneyInput").value;
-
-
         var xmlhttp = new XMLHttpRequest();
-
-
         xmlhttp.open("GET", "ajaxAdminFunc.php?n=" + name + "&p=" + money, true);
         xmlhttp.send();
+    }
+
+    function contact() {
+        document.getElementById("idTitle").innerHTML = "ccc7.com@gmail.com or drab3@stud.uniza.sk";
+        document.getElementById("idContextProducts").style.display = "none";
+        document.getElementById("idContextUsers").style.display = "none";
+        document.getElementById("idContextProductsAdd").style.display = "none";
+        closeNav();
     }
 
     /*********************************************************************************/

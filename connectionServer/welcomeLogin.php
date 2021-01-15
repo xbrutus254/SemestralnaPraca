@@ -1,13 +1,22 @@
 <?php
-// Initialize the session
-session_start();
+    session_start();
 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: LoginPage.php");
-    exit;
-}
-    $_SESSION["name"] = $_SESSION["name"];
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: LoginPage.php");
+        exit;
+    }
+
+    require_once('../connectionServer/Connection.php');
+
+    $my_Db      = new Connection();
+    $my_Db_Connection = $my_Db->getDBH();
+    $sthandler = $my_Db_Connection->prepare("SELECT money FROM appusers WHERE username = :name");
+    $sthandler->bindParam(':name', $_SESSION["name"]);
+    $sthandler->execute();
+    $row = $sthandler->fetch();
+    if($sthandler->rowCount() > 0) {
+        $money = (int)$row['money'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -60,18 +69,26 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </nav>
 
 
-<div class="page-header">
-    <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["name"]); ?></b>. Here you can change username/password or delete account.</h1>
 
-    <style>
-        p{
-            float: top;
-        }
-    </style>
-    <p>
-        <a href="resetPass.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logoutLogin.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
+    <div class="col-sm-8 text-right">
+
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["name"]); ?></b>. Here you can change your password or delete account.</h1>
+
+        <style>
+            p{
+                float: top;
+                left: 40%;
+            }
+        </style>
+        <p>
+            <a href="resetPass.php" class="btn btn-warning">Reset Your Password</a>
+            <a href="logoutLogin.php" class="btn btn-danger">Sign Out of Your Account</a>
+        </p>
+
+    </div>
+    <div class="col-sm-4 text-right">
+        <h1>Your amouth is  <b><?php echo htmlspecialchars($money); ?></b> €</h1>
+    </div>
 </div>
-</body>
+
 </html>

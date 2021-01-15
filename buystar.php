@@ -7,7 +7,8 @@ $my_Db_Connection = $my_Db->getDBH();
 
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-
+    header("location: ../LoginPage.php");
+    exit;
 }
 $sthandlerP = $my_Db_Connection->prepare("SELECT id_product FROM product");
 $sthandlerP->execute();
@@ -15,13 +16,17 @@ $count = $sthandlerP->rowCount();
 
 $_SESSION["iteration"] = 0;
 ?>
+<script>window.onload = function() {
+        showAllBodies();
+    };</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>OuterSpace</title>
     <link rel="icon" href="dataImages/icon.png">
-    <script type="text/javascript" src="listProducts.js"></script>
+    <script type="text/javascript" src="additionalFunctions/listProducts.js"></script>
+    <script type="text/javascript" src="additionalFunctions/shopJSf.js"></script>
 
     <link rel="stylesheet" href="additionalFunctions/stylesheet.css">
     <!-- CSS -->
@@ -73,7 +78,6 @@ $_SESSION["iteration"] = 0;
         <a href="javascript:void(0)" onclick="addFlights()"><i class="fa fa-fw fa-rocket"></i>Add Flights</a>
         <a href="javascript:void(0)" onclick="showAllBodies()"><i class="fa fa-fw fa-ravelry"></i> All Bodies</a>
         <a href="javascript:void(0)" onclick="showFilterBodies()"><i class="fa fa-fw fa-ravelry"></i> Filter Bodies</a>
-        <a href="#contact"><i class="fa fa-fw fa-envelope-open-o"></i> Support</a>
 
     </div>
     <a href="#" class="closebtn" onclick="closeNav()">&#x27F0;</a>
@@ -92,10 +96,33 @@ $_SESSION["iteration"] = 0;
             </div>
             <div class="transparent-box">
 
-                <div id="flightsList">
+                <div class="table9" id="flightsList">
+                    <h3><p id="txtHint0"></p></h3>
                 </div>
 
-                <div id="addList">
+                <div class="table3" id="addList"  style="display: none">
+                    <div>
+                        <h5><label for="fname">Name of rocket:</label>
+                            <input type="text" id="frocketname" class="form-control" placeholder="name"></h5>
+                    </div>
+                    <div>
+                        <h5><label for="fname">Time in space:</label>
+                            <input type="text" id="ftime" class="form-control" placeholder="in days"></h5>
+                    </div>
+                    <div>
+                        <h5><label for="ftype">Set date of launch:</label>
+                            <input type="date" class="form-control" id="launchdate" name="launchtimedate"></h5>
+                    </div>
+                    <div>
+                        <h5><label for="fdest">Set destination:</label>
+                            <input type="text" id="fdest" class="form-control" placeholder="destination"></h5>
+                    </div>
+                    <div>
+                        <h4><button class="sbmbutton" onclick="createRocketFunc('<?=$_SESSION["name"] ?>')">Submit</button></h4>
+
+                    </div>
+                    <div><p id="txtHint2">Total cost of rocket, you want to create: 25000€</p></div>
+
                 </div>
 
                 <div id="filterProductsList" style="display: none">
@@ -149,7 +176,16 @@ $_SESSION["iteration"] = 0;
                     </div>
                 </div>
                 <div id="idTableMain">
-                    <h3><p id="txtHint"></p></h3>
+                    <h3><p id="txtHint"></p>
+                        <style>
+                            button {
+                                right: 50%;
+                                width: 100%;
+                            }
+                        </style>
+                        <button type="button" id="buybutton" class="btn btn-danger" onclick="buyBodie('<?=$_SESSION["name"] ?>')">Buy</button>
+                    </h3>
+
                 </div>
 
             </div>
@@ -164,15 +200,21 @@ $_SESSION["iteration"] = 0;
 
 <script>
     function showFlights() {
+        document.getElementById("buybutton").style.display = "none";
+        document.getElementById("txtHint").innerHTML = "";
         document.getElementById("flightsList").style.display = "initial";
         document.getElementById("addList").style.display = "none";
         document.getElementById("filterProductsList").style.display = "none";
-        document.getElementById("btnleft").style.display = "initial";
-        document.getElementById("btnright").style.display = "initial";
+        document.getElementById("btnleft").style.display = "none";
+        document.getElementById("btnright").style.display = "none";
+        showAllFlightsJS();
         closeNav();
     }
 
     function addFlights() {
+        document.getElementById("buybutton").style.display = "none";
+        document.getElementById("txtHint").innerHTML = "";
+        document.getElementById("txtHint0").innerHTML = "";
         document.getElementById("flightsList").style.display = "none";
         document.getElementById("addList").style.display = "initial";
         document.getElementById("filterProductsList").style.display = "none";
@@ -182,6 +224,9 @@ $_SESSION["iteration"] = 0;
     }
 
     function showAllBodies() {
+        document.getElementById("buybutton").style.display = "initial";
+        document.getElementById("txtHint0").innerHTML = "";
+        document.getElementById("addList").style.display = "none";
         document.getElementById("btnleft").style.display = "initial";
         document.getElementById("btnright").style.display = "initial";
         document.getElementById("filterProductsList").style.display = "none";
@@ -191,6 +236,9 @@ $_SESSION["iteration"] = 0;
     }
 
     function showFilterBodies() {
+        document.getElementById("buybutton").style.display = "none";
+        document.getElementById("flightsList").style.display = "none";
+        document.getElementById("addList").style.display = "none";
         document.getElementById("filterProductsList").style.display = "initial";
         document.getElementById("btnleft").style.display = "none";
         document.getElementById("btnright").style.display = "none";
