@@ -1,1 +1,4 @@
-some texttttt
+Mars is the fourth planet from the sun. Befitting the Red Planet's bloody color, 
+the Romans named it after their god of war. 
+In truth, the Romans copied the ancient Greeks, who also named the planet after 
+their god of war, Ares.

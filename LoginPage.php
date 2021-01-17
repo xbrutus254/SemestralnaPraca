@@ -40,17 +40,17 @@
         // Validate credentials
         if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-            $sthandler = $my_Db_Connection->prepare("SELECT username FROM appusers WHERE username = :name");
+            $sthandler = $my_Db_Connection->prepare("SELECT username, password FROM appusers WHERE username = :name");
             $sthandler->bindParam(':name', $username);
             $sthandler->execute();
             if($sthandler->rowCount() > 0) {
-                $sthandler = $my_Db_Connection->prepare("SELECT username, password FROM appusers WHERE username = :name AND password = :pass");
-                $sthandler->bindParam(':name', $username);
-                $sthandler->bindParam(':pass', $password);
-                $sthandler->execute();
+                $row = $sthandler->fetch();
+                $origin_name = $row['username'];
+                $origin_psw = $row['password'];
                 //echo " pass_checker : " . $_POST["password"];
                 //echo " password : " . $password;
-                if($_POST["username"] === $username && $_POST['password'] === $password) {
+                if($origin_name == $username && password_verify($password, $origin_psw)) {
+
                     session_start();
                     // Store data in session variables
                     $_SESSION["loggedin"] = true;
@@ -98,7 +98,7 @@
 <body style="background-color: black">
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <a class="navbar-brand" href="index.html">Interesting Space</a>
+    <a class="navbar-brand" href="index.php">Interesting Space</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -108,7 +108,7 @@
                 <a class="nav-link" href="OurSolarSys.php">Our Solar System <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="Satellites.html">Satellites</a>
+                <a class="nav-link" href="Satellites.php">Satellites</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="buystar.php">Buy Star</a>

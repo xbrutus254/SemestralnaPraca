@@ -38,11 +38,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if(empty($new_password_err) && empty($confirm_password_err)){
+        $hash = password_hash($confirm_password, PASSWORD_DEFAULT);
         $sthandler = $my_Db_Connection->prepare("UPDATE appusers SET password = :password WHERE username = :name");
 
         $username = $_SESSION["name"];
 
-        $sthandler->bindParam(":password", $confirm_password);
+        $sthandler->bindParam(":password", $hash);
         $sthandler->bindParam(":name", $_SESSION["name"]);
 
         if($sthandler->execute()){
